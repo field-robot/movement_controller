@@ -161,3 +161,9 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+include_directories(include ${catkin_INCLUDE_DIRS})
+
+add_executable(movement_controller src/movement_controller.cpp)
+target_link_libraries(movement_controller ${catkin_LIBRARIES})
+add_dependencies(movement_controller beginner_tutorials_generate_messages_cpp)
