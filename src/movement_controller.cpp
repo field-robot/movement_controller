@@ -1,20 +1,49 @@
 #include "ros/ros.h"
-//#include "std_msgs/Int8.h"
-#include "std_msgs/Int64.h"
+#include "std_msgs/UInt8.h"
 #include <sstream>
+#include "std_msgs/String.h"
+
+
+/*///////NEW CODE
+
+
+void chatterCallback(const std_msgs::Int8::ConstPtr& msg)
+{
+}
+/*
+{
+  ROS_INFO("I heard: [%i]", msg->data);//.c_str());
+}
+/
+std_msgs::Int8 msg;
+
+
+/////////END NEW CODE*/
+
+
+
+
+
 
 
 int main(int argc, char **argv)
 {
+
+
+
+
+
+
+
   //ROS package name
   ros::init(argc, argv, "movement_controller");
   ros::NodeHandle n;
 
   //ROS set publish variables equal message variables
-  ros::Publisher chatter_speed_LF = n.advertise<std_msgs::Int64>("speed_LF", 1000);
-  ros::Publisher chatter_speed_LB = n.advertise<std_msgs::Int64>("speed_LB", 1000);
-  ros::Publisher chatter_speed_RF = n.advertise<std_msgs::Int64>("speed_RF", 1000);
-  ros::Publisher chatter_speed_RB = n.advertise<std_msgs::Int64>("speed_RB", 1000);
+  ros::Publisher chatter_speed_LF = n.advertise<std_msgs::UInt8>("speed_LF", 1000);
+  ros::Publisher chatter_speed_LB = n.advertise<std_msgs::UInt8>("speed_LB", 1000);
+  ros::Publisher chatter_speed_RF = n.advertise<std_msgs::UInt8>("speed_RF", 1000);
+  ros::Publisher chatter_speed_RB = n.advertise<std_msgs::UInt8>("speed_RB", 1000);
 
   //ROS ??
   ros::Rate loop_rate(10);
@@ -25,8 +54,8 @@ int main(int argc, char **argv)
   int speed_RF = 0; //For publishing
   int speed_RB = 0; //For publishing
 
-  float offset_FW = -100;   //For subscribing current motor offset related to the row
-  float angle_FW =  -10; //For subscribing current motor angle related to the row
+  float offset_FW = 100;   //For subscribing current motor offset related to the row
+  float angle_FW =  0; //For subscribing current motor angle related to the row
 
   float formula_a = 2000; 	//(1/a)X^b
   float formula_b = 2;		//(1/a)X^b
@@ -39,10 +68,10 @@ int main(int argc, char **argv)
   while (ros::ok())
   {
     //ROS declare message variables
-    std_msgs::Int64 msg_speed_LF;
-    std_msgs::Int64 msg_speed_LB;
-    std_msgs::Int64 msg_speed_RF;
-    std_msgs::Int64 msg_speed_RB;
+    std_msgs::UInt8 msg_speed_LF;
+    std_msgs::UInt8 msg_speed_LB;
+    std_msgs::UInt8 msg_speed_RF;
+    std_msgs::UInt8 msg_speed_RB;
 
     //ROS Set messages variables equal to variables
     msg_speed_LF.data = speed_LF;
@@ -51,6 +80,7 @@ int main(int argc, char **argv)
     msg_speed_RB.data = speed_RB;
 
     //ROS_INFO("%i", msg.data);  //Display variable when running package
+      
 
     //ROS publish variables
     chatter_speed_LF.publish(msg_speed_LF);
@@ -92,8 +122,30 @@ int main(int argc, char **argv)
       speed_RF = 255;
       speed_RB = 255;
     }   
+
+/* NEW CODE
+
+
+ros::init(argc, argv, "listener");
+
+
+
+
+  ros::Subscriber sub = n.subscribe("speed_LF", 1000, chatterCallback);
+
+  ROS_INFO("I heard: [%i]", msg.data);//.c_str());
+  ros::spinOnce();
+
+
+
+*/////////END NEW CODE
       
   }
+
+
+
+
+
 
 
   return 0;
